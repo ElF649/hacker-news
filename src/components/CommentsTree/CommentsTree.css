@@ -1,0 +1,21 @@
+.comment-list {
+  list-style: none;
+}
+
+.story-page__container > ul {
+  padding-left: 0;
+}
+
+.comment__button {
+  cursor: pointer;
+  background-color: transparent;
+  color: #828282;
+  border: none;
+  box-sizing: border-box;
+  outline: none;
+  padding: 0;
+}
+
+.comment-list_hidden {
+  display: none;
+}

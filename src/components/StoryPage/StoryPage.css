@@ -1,0 +1,32 @@
+.story-page {
+  background-color: #F5F6F7;
+}
+.story-page__container {
+  width: calc(100% - 2 * 104px);
+  margin: auto;
+  padding: 20px 0;
+}
+
+@media screen and (max-width : 1439px) {
+  .story-page__container {
+    width: calc(100% - 2 * 90px);
+  }
+}
+
+@media screen and (max-width : 1279px) {
+  .story-page__container {
+    width: calc(100% - 2 * 60px);
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .story-page__container {
+    width: calc(100% - 2 * 40px);
+  }
+}
+
+@media screen and (max-width : 767px) {
+  .story-page__container {
+    width: calc(100% - 2 * 19px);
+  }
+}

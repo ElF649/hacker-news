@@ -1,0 +1,9 @@
+.comment__header {
+  display: flex;
+  color: #828282;
+}
+
+.comment__header p {
+  margin-right: 10px;
+  margin-bottom: 2px;
+}

@@ -1,21 +1,40 @@
-import { React, useEffect, useState } from 'react';
+import { React, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { getItemById } from '../../utils/HackerNewsAPI';
 import { CommentsTree } from '../CommentsTree/CommentsTree';
 import { Story } from '../Story/Story';
 import './StoryPage.css';
+import {
+  setCommentIds, storyError, storyPending, storySuccess,
+} from '../../store/storyPage/actions';
 
-export const StoryPage = () => {
-  const [story, setStory] = useState({});
-  const [commentIds, setCommentIds] = useState([]);
+const mapStateToProps = (state) => ({
+  story: state.storyPage.story.data,
+  commentIds: state.StoryPage.commentIds,
+});
 
+const mapDispatchToProps = {
+  storyPending, storySuccess, storyError,
+};
+
+export const StoryPage = ({ story, commentIds }) => {
   const { pathname } = useLocation();
   const currentStoryId = pathname.slice(7);
 
-  useEffect(async () => {
-    const responseStory = await getItemById(currentStoryId);
-    setStory(responseStory);
-    setCommentIds(responseStory.kids);
+  const getStory = async () => {
+    storyPending();
+    try {
+      const resStory = await getItemById(currentStoryId);
+      storySuccess(resStory);
+    } catch (error) {
+      storyError(Error);
+    }
+  };
+
+  useEffect(() => {
+    getStory();
+    setCommentIds(story.kids);
   }, []);
 
   return (
@@ -33,3 +52,5 @@ export const StoryPage = () => {
 
   );
 };
+
+export default connect(mapStateToProps, mapDispatchToProps)(StoryPage);

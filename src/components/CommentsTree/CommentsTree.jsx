@@ -1,16 +1,35 @@
-import { React, useEffect, useState } from 'react';
+import { React, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { commentError, commentPending, commentSuccess } from '../../store/commentsTree/actions';
 import { getItemById } from '../../utils/HackerNewsAPI';
 import { Comment } from '../Comment/Comment';
 import './CommentsTree.css';
 
-export const CommentsTree = ({ commentIds, listClass, id }) => {
-  const [comments, setComments] = useState([]);
+const mapStateToProps = (state) => ({
+  comments: state.CommentsTree.comment.data,
+});
+
+const mapDispatchToProps = {
+  commentError, commentPending, commentSuccess,
+};
+
+export const CommentsTree = ({
+  commentIds, listClass, id, comments,
+}) => {
+  const getComments = async (ids) => {
+    commentPending();
+    try {
+      const responseComments = await Promise.all(
+        ids.map(getItemById),
+      );
+      commentSuccess(responseComments);
+    } catch (error) {
+      commentError(error);
+    }
+  };
 
   useEffect(async () => {
-    const responseComments = await Promise.all(
-      commentIds.map(getItemById),
-    );
-    setComments(responseComments);
+    getComments(commentIds);
   }, [commentIds]);
 
   function switchComments(elemid) {
@@ -55,3 +74,5 @@ export const CommentsTree = ({ commentIds, listClass, id }) => {
     </ul>
   );
 };
+
+export default connect(mapStateToProps, mapDispatchToProps)(CommentsTree);

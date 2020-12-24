@@ -76,14 +76,14 @@ export const Story = ({ story, index }) => {
             )}
           </div>
           {isMobile
-              && (
+            && (
               <Link
                 className="story__comments"
                 to={`/story/${id}`}
               >
                 {descendantsToString(descendants)}
               </Link>
-              )}
+            )}
         </div>
       </div>
     </div>

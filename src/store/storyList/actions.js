@@ -1,3 +1,5 @@
+import { getItemById, getStoryIds } from '../../utils/HackerNewsAPI';
+
 export const STORIES_PENDING = 'STORIES_PENDING';
 export const STORIES_SUCCESS = 'STORIES_SUCCESS';
 export const STORIES_ERROR = 'STORIES_ERROR';
@@ -40,3 +42,22 @@ export const storiesError = (error) => ({
   data: null,
   error,
 });
+
+export const getStories = async (dispatch) => {
+  dispatch(storiesIdPending());
+  try {
+    const IdsData = await getStoryIds();
+    dispatch(storiesIdSuccess(IdsData));
+    dispatch(storiesPending());
+    try {
+      const storiesData = await Promise.all(
+        IdsData.map(getItemById),
+      );
+      dispatch(storiesSuccess(storiesData));
+    } catch (error) {
+      dispatch(storiesError());
+    }
+  } catch (error) {
+    dispatch(storiesIdError(error));
+  }
+};
